@@ -33,6 +33,10 @@ const App: React.FC = () => {
     setExercises(prevExercises => prevExercises.filter(ex => ex.id !== id));
   }, []);
 
+  const resetExercises = useCallback(() => {
+    setExercises([]);
+  }, []);
+
   const { totalDuration, totalCalories } = useMemo(() => {
     return exercises.reduce(
       (acc, curr) => {
@@ -58,7 +62,17 @@ const App: React.FC = () => {
         </header>
 
         <main className="space-y-8">
-          <Summary totalDuration={totalDuration} totalCalories={totalCalories} />
+          <div className="flex justify-between items-end">
+            <Summary totalDuration={totalDuration} totalCalories={totalCalories} />
+            {exercises.length > 0 && (
+              <button
+                onClick={resetExercises}
+                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors"
+              >
+                Reset All
+              </button>
+            )}
+          </div>
           
           <div className="bg-gray-800 rounded-xl shadow-lg p-6">
             <h2 className="text-2xl font-semibold mb-4 text-green-400">Log New Exercise</h2>
